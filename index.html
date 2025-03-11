@@ -58,40 +58,34 @@
             pointer-events: none;
         }
 
-        .crystal-ball::after {
-            content: '';
-            position: absolute;
-            top: calc(50% - 10px);
-            left: calc(50% - 10px);
-            width: 20px;
-            height: 20px;
-            background-color: rgba(255, 255, 255, 0.8);
-            border-radius: 50%;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-            animation: sparkle-animation infinite alternate ease-in-out;
-        }
+       .crystal-ball::after {
+    content: '';
+    position: absolute;
+    top: 10%; /* Posiciona cerca de la parte superior */
+    left: 80%; /* Posiciona cerca del borde derecho */
+    width: 20px;
+    height: 20px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 50%;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    animation: sparkle-animation 2s infinite alternate ease-in-out; /* Ajusta duración si es necesario */
+}
 
 @keyframes sparkle-animation {
     0% {
         transform: scale(1);
         opacity: 1;
-        top: calc(50% - 10px);
-        left: calc(50% - 10px);
-        box-shadow: inset -5px -5px rgba(200, 200, 200, 0.6);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
     }
     50% {
-        transform: scale(1.2);
-        opacity: 0.8;
-        top: calc(50% - 12px);
-        left: calc(50% - 12px);
-        box-shadow: inset -10px -10px rgba(255, 255, 255, 0.4);
+        transform: scale(1.5);
+        opacity: 0.6;
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
     }
     100% {
         transform: scale(1);
         opacity: 1;
-        top: calc(50% - 10px);
-        left: calc(50% - 10px);
-        box-shadow: inset -5px -5px rgba(200, 200, 200, 0.6);
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
     }
 }
 
