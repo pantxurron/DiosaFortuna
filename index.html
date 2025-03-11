@@ -46,7 +46,7 @@
 }
 
         .fortune-text {
-            font-size: 2.8em;
+            font-size: 3.8em;
             margin: 20px;
             opacity: 0;
             transition: opacity 1s;
@@ -55,9 +55,9 @@
 
         button {
             background: #daa520;
-            border: 3px solid #8b4513;
+            border: 6px solid #8b4513;
             padding: 10px 30px;
-            font-size: 1.8em;
+            font-size: 2.8em;
             cursor: pointer;
             color: #2c1810;
             font-family: 'Cinzel', serif;
@@ -71,7 +71,7 @@
         }
 
         .title {
-            font-size: 3.5em;
+            font-size: 5.5em;
             color: #ffd700;
             text-shadow: 2px 2px 2px #8b0000;
             margin-bottom: 30px;
@@ -102,7 +102,7 @@
             setTimeout(() => {
                 const randomIndex = Math.floor(Math.random() * fortunes.length);
                 fortuneElement.innerHTML = `
-                    <div style="font-size: 1.5em; color: #ff4500; margin-bottom: 15px;">
+                    <div style="font-size: 3.5em; color: #ffffff; margin-bottom: 15px;">
                         ¡Tu deseo se ha concedido!
                     </div>
                     ${fortunes[randomIndex]}
