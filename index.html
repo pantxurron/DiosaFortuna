@@ -75,14 +75,12 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+SC:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="zoltar-frame">
-        <div class="crystal-ball">
+    <div class="crystal-ball">
             <div class="title">DIOSA FORTUNA</div>
             <div id="fortune" class="fortune-text"></div>
             <button onclick="showFortune()">PIDE TU DESEO</button>
         </div>
-    </div>
-
+    
     <script>
         async function loadFortunes() {
             const response = await fetch('deseos.txt');
