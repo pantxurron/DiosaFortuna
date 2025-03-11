@@ -34,7 +34,32 @@
             border: 6px solid rgba(255, 255, 255, 0.2);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
+.crystal-ball::before {
+  content: '';
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  width: 20%;
+  height: 20%;
+  background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+  border-radius: 50%;
+}
+.crystal-ball {
+  background-image: linear-gradient(0deg, 
+    rgba(255,255,255,0.1) 0%, 
+    rgba(255,255,255,0.2) 25%, 
+    rgba(255,255,255,0.1) 50%, 
+    rgba(255,255,255,0.2) 75%, 
+    rgba(255,255,255,0.1) 100%
+  );
+  background-size: 100% 20px;
+  animation: wave 10s linear infinite;
+}
 
+@keyframes wave {
+  0% { background-position: 0 0; }
+  100% { background-position: 0 20px; }
+}
         .title {
             font-size: 4.5em;
             color: #ffd700;
@@ -93,12 +118,11 @@
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+SC:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
+    <div class="title">CONSULTA A LA DIOSA FORTUNA</div>
     <div class="crystal-ball">
-        <div class="title">CONSULTA A LA DIOSA FORTUNA</div>
         <div id="fortune" class="fortune-text"></div>
-        <button onclick="showFortune()">PIDE TU DESEO</button>
     </div>
-
+    <button onclick="showFortune()">PIDE TU DESEO</button>
     <script>
         async function loadFortunes() {
             const response = await fetch('deseos.txt');
