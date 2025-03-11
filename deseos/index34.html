@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Zoltar - El Oráculo Mecánico</title>
+    <style>
+        body {
+            background: url('https://images.pexels.com/photos/2599244/pexels-photo-2599244.jpeg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') center/cover no-repeat fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Cinzel', serif;
+            -webkit-font-smoothing: antialiased;
+            text-rendering: optimizeLegibility;
+            overflow: hidden;
+            will-change: transform;
+        }
+
+        @keyframes glow {
+            0%, 100% { opacity: 0.4; filter: brightness(1); }
+            50% { opacity: 0.8; filter: brightness(1.2); }
+        }
+
+        .zoltar-frame {
+            background: linear-gradient(45deg, #8b4513 30%, #5a2d0c 100%);
+            padding: 30px;
+            border: 15px ridge #daa520;
+            border-radius: 10px;
+            box-shadow: 0 0 50px rgba(218, 165, 32, 0.5);
+            position: relative;
+            animation: frameGlow 3s ease-in-out infinite;
+            will-change: transform, opacity;
+        }
+
+        .crystal-ball {
+            width: 500px;
+            height: 500px;
+            background: radial-gradient(circle at 30% 30%, #500000, #200000 80%);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px;
+            text-align: center;
+            color: #ffd700;
+            position: relative;
+            overflow: hidden;
+            animation: glow 2s ease-in-out infinite;
+            will-change: transform, opacity;
+        }
+
+        .crystal-ball:before {
+            content: '';
+            position: absolute;
+            width: 150%;
+            height: 150%;
+            background: radial-gradient(circle at 50% 40%, 
+                rgba(255,215,0,0.3) 0%, 
+                rgba(255,69,0,0.1) 70%);
+            filter: blur(50px);
+            animation: swirl 25s linear infinite;
+            will-change: transform;
+        }
+
+        .fortune-text {
+            font-size: 2.5em;
+            line-height: 1.6;
+            margin: 30px;
+            opacity: 0;
+            transition: opacity 1s cubic-bezier(0.4, 0, 0.2, 1);
+            font-family: 'Cormorant SC', serif;
+            text-shadow: 
+                2px 2px 4px rgba(0,0,0,0.7),
+                0 0 25px rgba(255,69,0,0.9);
+            letter-spacing: 1px;
+        }
+
+        /* Resto del CSS mantenido con optimizaciones */
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+SC:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="zoltar-frame">
+        <div class="crystal-ball">
+            <div class="title">ZOLTAR</div>
+            <div id="fortune" class="fortune-text"></div>
+            <button onclick="showFortune()">CONSULTAR AL ORÁCULO</button>
+        </div>
+    </div>
+
+    <script>
+        // Cacheado de frases para mejor performance
+        let cachedFortunes = null;
+
+        async function loadFortunes() {
+            if(!cachedFortunes) {
+                const response = await fetch('deseos.txt');
+                const text = await response.text();
+                cachedFortunes = text.split('\n')
+                    .map(line => line.trim())
+                    .filter(line => line);
+            }
+            return cachedFortunes;
+        }
+
+        async function showFortune() {
+            const fortuneElement = document.getElementById('fortune');
+            fortuneElement.style.opacity = 0;
+            
+            const fortunes = await loadFortunes();
+            const randomIndex = Math.floor(Math.random() * fortunes.length);
+            
+            // Timeout sincronizado con la transición CSS
+            setTimeout(() => {
+                fortuneElement.innerHTML = `
+                    <div class="granted-text">¡Tu deseo se ha concedido!</div>
+                    <div class="fortune-content">${fortunes[randomIndex]}</div>
+                `;
+                fortuneElement.style.opacity = 1;
+            }, 500);
+        }
+    </script>
+</body>
+</html>
