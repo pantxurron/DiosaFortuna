@@ -10,6 +10,8 @@
             flex-direction: column;
             justify-content: center;
             align-items: flex-start;
+            padding: 20px;
+            text-align: center;
             min-height: 100vh;
             margin: 0;
             font-family: 'Cinzel', serif;
@@ -68,7 +70,11 @@
             margin-bottom: 20px;
             text-align: center;
         }
-
+        .granted-text {
+            font-size: 1.5em;
+            color: #ffffff;
+            margin-bottom: 10px;
+        }
         .fortune-text {
             font-size: 2.8em; /* Reducido para mejor ajuste */
             margin: 15px;
@@ -82,11 +88,7 @@
             background-color: rgba(0, 0, 0, 0.4); /* Fondo semi-transparente */
             transform: translateY(20px); /* Iniciar fuera de vista */
         }
-        .granted-text {
-            font-size: 2.8em;
-            color: #ffffff;
-            margin-bottom: 10px;
-        }
+
         .fortune-text.show {
             opacity: 1;
             transform: translateY(0); /* Desplazamiento suave al centro */
@@ -127,7 +129,7 @@
     <div class="crystal-ball">
         <div id="fortune" class="fortune-text"></div>
     </div>
-    <button onclick="showFortune()">PIDE TU DESEO</button>
+    <div></div><button onclick="showFortune()">PIDE TU DESEO</button></div>
     <script>
         async function loadFortunes() {
             const response = await fetch('deseos.txt');
