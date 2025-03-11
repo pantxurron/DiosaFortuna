@@ -8,93 +8,97 @@
             background: url('https://content.nationalgeographic.com.es/medio/2018/04/10/oraculo-de-delfos_5865f5f7_1280x720.jpg?auto=compress&cs=tinysrgb&dpr=2&h=750&w=1260') center/cover no-repeat fixed;
             display: flex;
             justify-content: center;
-            align-items: center;
+            align-items: flex-start;
             min-height: 100vh;
             margin: 0;
             font-family: 'Cinzel', serif;
         }
 
-        .zoltar-frame {
-            background: url('data:image/png;base64,iVBORw0KGgo...') #8b4513;
-            padding: 30px;
-            border: 15px ridge #daa520;
-            border-radius: 10px;
-            box-shadow: 0 0 50px rgba(218, 165, 32, 0.5);
+        .crystal-ball {
+            width: 80vw; /* Ajustado para mejor responsividad */
+            max-width: 800px; /* Límite máximo */
+            height: 80vw;
+            max-height: 800px;
+            background: rgba(255, 255, 255, 0.3); /* Reduje la opacidad */
+            border-radius: 10%;
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Centrado horizontal */
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            color: #000000;
             position: relative;
+            overflow: auto; /* Ocultar scroll */
+            backdrop-filter: blur(15px);
+            border: 6px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
         }
 
-.crystal-ball {
-    width: 100vw;
-    height: 100vw;
-    background: rgba(255, 255, 255, 0.5);
-    border-radius: 10%;
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    justify-content: center;
-    padding: 20px;
-    text-align: center;
-    color: #000000;
-    text-shadow: 0 0 10px #fffffff;
-    position: relative;
-    overflow: auto;
-    backdrop-filter: blur(20px);
-    border: 6px solid rgba(255, 255, 255, 0.3);
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.4);
-}
-
-.crystal-ball p {
-    font-size: 3.5em;
-    margin: 0;
-    color: #000000;
-    text-shadow: 
-        -2px -2px 0 #000,
-        2px -2px 0 #000,
-        -2px 2px 0 #000,
-        2px 2px 0 #000;
-}
+        .title {
+            font-size: 4.5em;
+            color: #ffd700;
+            text-shadow: 2px 2px 2px #8b0000;
+            margin-bottom: 20px;
+            text-align: center;
+        }
 
         .fortune-text {
-            font-size: 4.2em;
-            margin: 10px;
+            font-size: 2.8em; /* Reducido para mejor ajuste */
+            margin: 15px;
             opacity: 0;
-            transition: opacity 1s;
+            transition: opacity 0.8s, transform 0.5s; /* Animación más suave */
             font-family: 'Cormorant SC', serif;
+            color: #fff;
+            text-shadow: 1px 1px 3px #000; /* Sombra sutil */
+            padding: 15px;
+            border-radius: 8px;
+            background-color: rgba(0, 0, 0, 0.4); /* Fondo semi-transparente */
+            transform: translateY(20px); /* Iniciar fuera de vista */
+        }
+
+        .fortune-text.show {
+            opacity: 1;
+            transform: translateY(0); /* Desplazamiento suave al centro */
         }
 
         button {
             background: #daa520;
-            border: 10px solid #8b4513;
-            padding: 10px 30px;
-            font-size: 3.2em;
+            border: 4px solid #8b4513; /* Reduje el tamaño del borde */
+            padding: 12px 35px;
+            font-size: 2.5em; /* Reducido para mejor legibilidad */
             cursor: pointer;
             color: #2c1810;
             font-family: 'Cinzel', serif;
             transition: all 0.3s;
-            margin-top: 10px;
+            margin-top: 15px;
         }
 
         button:hover {
             background: #ffd700;
-            transform: scale(1.2);
+            transform: scale(1.1);
         }
 
-        .title {
-            font-size: 6.0em;
-            color: #ffd700;
-            text-shadow: 2px 2px 2px #8b0000;
-            margin-bottom: 30px;
+        /* Animación Shake */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
         }
     </style>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+SC:wght@600&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="crystal-ball">
-            <div class="title">CONSULTA A LA DIOSA FORTUNA</div>
-            <div id="fortune" class="fortune-text"></div>
-            <button onclick="showFortune()">PIDE TU DESEO</button>
-        </div>
-    
+        <div class="title">CONSULTA A LA DIOSA FORTUNA</div>
+        <div id="fortune" class="fortune-text"></div>
+        <button onclick="showFortune()">PIDE TU DESEO</button>
+    </div>
+
     <script>
         async function loadFortunes() {
             const response = await fetch('deseos.txt');
@@ -103,21 +107,25 @@
         }
 
         async function showFortune() {
-            const fortunes = await loadFortunes();
+            const button = document.querySelector('button');
             const fortuneElement = document.getElementById('fortune');
             
-            fortuneElement.style.opacity = 0;
+            // Añadir clase 'shake' al botón
+            button.classList.add('shake');
             
+            // Eliminar la clase 'shake' después de la animación
             setTimeout(() => {
+                button.classList.remove('shake');
+            }, 800);
+            
+            fortuneElement.classList.remove('show');
+            
+            setTimeout(async () => {
+                const fortunes = await loadFortunes();
                 const randomIndex = Math.floor(Math.random() * fortunes.length);
-                fortuneElement.innerHTML = `
-                    <div style="font-size: 1.5em; color: #ffffff; margin-bottom: 10px;">
-                        ¡Tu deseo se ha concedido!
-                    </div>
-                    ${fortunes[randomIndex]}
-                `;
-                fortuneElement.style.opacity = 1;
-            }, 1000);
+                fortuneElement.textContent = fortunes[randomIndex]; // Texto directo
+                fortuneElement.classList.add('show');
+            }, 900); // Ajustar el tiempo para sincronizar
         }
     </script>
 </body>
