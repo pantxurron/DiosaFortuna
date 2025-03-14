@@ -156,6 +156,19 @@
     </div>
     <button onclick="showFortune()" aria-label="Pide tu deseo a la Diosa Fortuna">PIDE TU DESEO</button>
     <script>
+        async function loadFortunes() {
+    try {
+        const response = await fetch('https://pantxurron.github.io/DiosaFortuna/deseos.txt');
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const text = await response.text();
+        return text.split('\n').filter(line => line.trim() !== '');
+    } catch (error) {
+        console.error('Error al cargar los deseos:', error);
+        return ['No se pudieron cargar los deseos, intenta más tarde.'];
+    }
+}
         let usedFortuneIndices = [];
 
 function getRandomFortune(fortunes) {
@@ -184,7 +197,7 @@ async function showFortune() {
 
     fortuneElement.classList.remove('show');
 
-    setTimeout(async () => {
+    try {
         const fortunes = await loadFortunes();
         const selectedFortune = getRandomFortune(fortunes);
 
@@ -194,9 +207,15 @@ async function showFortune() {
         `;
 
         fortuneElement.classList.add('show');
-    }, 900);
+    } catch (error) {
+        console.error('Error al mostrar la fortuna:', error);
+        fortuneElement.innerHTML = `
+            <div class="granted-text">Lo siento, la Diosa Fortuna está ocupada</div>
+            Intenta de nuevo más tarde
+        `;
+        fortuneElement.classList.add('show');
+    }
 }
     </script>
 </body>
 </html>
-
