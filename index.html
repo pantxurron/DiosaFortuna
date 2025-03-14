@@ -156,54 +156,46 @@
     </div>
     <button onclick="showFortune()" aria-label="Pide tu deseo a la Diosa Fortuna">PIDE TU DESEO</button>
     <script>
-        async function loadFortunes() {
-            const cacheKey = 'fortunes';
-            const cachedFortunes = localStorage.getItem(cacheKey);
+        let usedFortuneIndices = [];
 
-            if (cachedFortunes) {
-                return JSON.parse(cachedFortunes);
-            }
+function getRandomFortune(fortunes) {
+    if (usedFortuneIndices.length === fortunes.length) {
+        // Si todos los índices han sido usados, reinicia el array
+        usedFortuneIndices = [];
+    }
 
-            try {
-                const response = await fetch('deseos.txt');
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                const text = await response.text();
-                const fortunes = text.split('\n').filter(line => line.trim() !== '');
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * fortunes.length);
+    } while (usedFortuneIndices.includes(randomIndex));
 
-                // Cachear los deseos
-                localStorage.setItem(cacheKey, JSON.stringify(fortunes));
-                return fortunes;
-            } catch (error) {
-                console.error('Error al cargar los deseos:', error);
-                return ['No se pudieron cargar los deseos, intenta más tarde.'];
-            }
-        }
+    usedFortuneIndices.push(randomIndex);
+    return fortunes[randomIndex];
+}
 
-        async function showFortune() {
-            const button = document.querySelector('button');
-            const fortuneElement = document.getElementById('fortune');
+async function showFortune() {
+    const button = document.querySelector('button');
+    const fortuneElement = document.getElementById('fortune');
 
-            button.classList.add('shake');
-            setTimeout(() => {
-                button.classList.remove('shake');
-            }, 800);
+    button.classList.add('shake');
+    setTimeout(() => {
+        button.classList.remove('shake');
+    }, 800);
 
-            fortuneElement.classList.remove('show');
+    fortuneElement.classList.remove('show');
 
-            setTimeout(async () => {
-                const fortunes = await loadFortunes();
-                const randomIndex = Math.floor(Math.random() * fortunes.length);
+    setTimeout(async () => {
+        const fortunes = await loadFortunes();
+        const selectedFortune = getRandomFortune(fortunes);
 
-                fortuneElement.innerHTML = `
-                    <div class="granted-text">¡Tu deseo se ha concedido!</div>
-                    ${fortunes[randomIndex]}
-                `;
+        fortuneElement.innerHTML = `
+            <div class="granted-text">¡Tu deseo se ha concedido!</div>
+            ${selectedFortune}
+        `;
 
-                fortuneElement.classList.add('show');
-            }, 900);
-        }
+        fortuneElement.classList.add('show');
+    }, 900);
+}
     </script>
 </body>
 </html>
