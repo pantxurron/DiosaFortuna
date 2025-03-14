@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>LA DIOSA FORTUNA</title>
+    <style>
+        :root {
+            --primary-color: #ffd700;
+            --secondary-color: #8b0000;
+            --text-color: #fff;
+            --background-opacity: rgba(0, 0, 0, 0.4);
+        }
+
+        body {
+            background: url('https://pantxurron.github.io/DiosaFortuna/fondodeseos.jpg') center/cover no-repeat fixed;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+            text-align: center;
+            min-height: 100vh;
+            margin: 0;
+            font-family: 'Cinzel', serif;
+            color: var(--text-color);
+        }
+
+        .crystal-ball {
+            width: 80vw;
+            max-width: 800px;
+            height: 80vw;
+            max-height: 800px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 0 40px rgba(0, 0, 0, 0.6);
+            background: radial-gradient(circle, rgba(66, 66, 66, 0.2) 0%, rgba(0, 0, 0, 0.5) 100%);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+        }
+
+        .crystal-ball::before {
+            content: '';
+            position: absolute;
+            top: 10%;
+            left: 10%;
+            width: 80%;
+            height: 80%;
+            background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 10%, transparent 50%);
+            border-radius: 50%;
+            pointer-events: none;
+        }
+
+       .crystal-ball::after {
+    content: '';
+    position: absolute;
+    top: 20%; /* Posiciona cerca de la parte superior */
+    left: 80%; /* Posiciona cerca del borde derecho */
+    width: 60px;
+    height: 40px;
+    background-color: rgba(255, 255, 255, 0.8);
+    border-radius: 80% / 50%;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    animation: sparkle-animation 2s infinite alternate ease-in-out; /* Ajusta duración si es necesario */
+}
+
+@keyframes sparkle-animation {
+    0% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    }
+    50% {
+        transform: scale(1.5);
+        opacity: 0.6;
+        box-shadow: 0 0 30px rgba(255, 255, 255, 0.6);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+        box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
+    }
+}
+
+        .title {
+            font-size: 4.5em;
+            color: var(--primary-color);
+            text-shadow: 2px 2px 2px var(--secondary-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .granted-text {
+            font-size: 0.8em;
+            margin-bottom: 10px;
+        }
+
+        .fortune-text {
+            font-size: 4.2em;
+            margin: 15px;
+            opacity: 0;
+            transition: opacity 0.8s, transform 0.5s;
+            font-family: 'Cormorant SC', serif;
+            text-shadow: 1px 1px 3px #000;
+            padding: 15px;
+            border-radius: 8px;
+            background-color: var(--background-opacity);
+            transform: translateY(20px);
+        }
+
+        .fortune-text.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        button {
+            background: #daa520;
+            border: 4px solid #8b4513;
+            padding: 12px 35px;
+            font-size: 2.5em;
+            cursor: pointer;
+            color: #2c1810;
+            font-family: 'Cinzel', serif;
+            transition: all 0.3s;
+            margin-top: 15px;
+        }
+
+        button:hover {
+            background: var(--primary-color);
+            transform: scale(1.1);
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+
+        .shake {
+            animation: shake 0.8s cubic-bezier(.36,.07,.19,.97) both;
+        }
+    </style>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Cormorant+SC:wght@600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="title">CONSULTA A LA DIOSA FORTUNA</div>
+    <div class="crystal-ball">
+        <div id="fortune" class="fortune-text"></div>
+    </div>
+    <button onclick="showFortune()" aria-label="Pide tu deseo a la Diosa Fortuna">PIDE TU DESEO</button>
+    <script>
+        let usedFortuneIndices = [];
+
+function getRandomFortune(fortunes) {
+    if (usedFortuneIndices.length === fortunes.length) {
+        // Si todos los índices han sido usados, reinicia el array
+        usedFortuneIndices = [];
+    }
+
+    let randomIndex;
+    do {
+        randomIndex = Math.floor(Math.random() * fortunes.length);
+    } while (usedFortuneIndices.includes(randomIndex));
+
+    usedFortuneIndices.push(randomIndex);
+    return fortunes[randomIndex];
+}
+
+async function showFortune() {
+    const button = document.querySelector('button');
+    const fortuneElement = document.getElementById('fortune');
+
+    button.classList.add('shake');
+    setTimeout(() => {
+        button.classList.remove('shake');
+    }, 800);
+
+    fortuneElement.classList.remove('show');
+
+    setTimeout(async () => {
+        const fortunes = await loadFortunes();
+        const selectedFortune = getRandomFortune(fortunes);
+
+        fortuneElement.innerHTML = `
+            <div class="granted-text">¡Tu deseo se ha concedido!</div>
+            ${selectedFortune}
+        `;
+
+        fortuneElement.classList.add('show');
+    }, 900);
+}
+    </script>
+</body>
+</html>
+
